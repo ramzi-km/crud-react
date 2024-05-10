@@ -10,7 +10,7 @@ const EmployeeMasterLogin = () => {
     const redirectPath = location.state?.path || '/employeeMaster/dashboard'
 
     const handleLogin = () => {
-        auth.adminLogin(admin)
+        auth.adminLogin({ name: admin })
         navigate(redirectPath)
     }
     return (

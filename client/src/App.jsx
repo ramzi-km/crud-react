@@ -10,40 +10,46 @@ import { AuthProvider } from './utils/Auth'
 import EmployeeMasterLoginGuard from './utils/EmployeeMasterLoginGuard'
 import NavbarEmployeeMaster from './components/employeeMaster/navbar/NavbarEmployeeMaster'
 import { EmployeeManagement } from './components/employeeMaster/employeeManagement/EmployeeManagement'
+import UserFetch from './utils/UserFetch'
 
 function App() {
     return (
         <>
             <AuthProvider>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/" element={<Navbar />}>
-                        <Route index element={<Home />} />
-                        <Route path="home" element={<Home />} />
-                    </Route>
+                <UserFetch>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/" element={<Navbar />}>
+                            <Route index element={<Home />} />
+                            <Route path="home" element={<Home />} />
+                        </Route>
 
-                    <Route element={<EmployeeMasterLoginGuard />}>
-                        <Route
-                            path="/employeeMaster/login"
-                            element={<EmployeeMasterLogin />}
-                        />
-                    </Route>
-                    <Route element={<EmployeeMasterGuard />}>
-                        <Route
-                            path="/employeeMaster"
-                            element={<NavbarEmployeeMaster />}
-                        >
-                            <Route index element={<Dashboard />} />
-                            <Route path="dashboard" element={<Dashboard />} />
+                        <Route element={<EmployeeMasterLoginGuard />}>
                             <Route
-                                path="employeeManagement"
-                                element={<EmployeeManagement />}
+                                path="/employeeMaster/login"
+                                element={<EmployeeMasterLogin />}
                             />
                         </Route>
-                    </Route>
+                        <Route element={<EmployeeMasterGuard />}>
+                            <Route
+                                path="/employeeMaster"
+                                element={<NavbarEmployeeMaster />}
+                            >
+                                <Route index element={<Dashboard />} />
+                                <Route
+                                    path="dashboard"
+                                    element={<Dashboard />}
+                                />
+                                <Route
+                                    path="employeeManagement"
+                                    element={<EmployeeManagement />}
+                                />
+                            </Route>
+                        </Route>
 
-                    <Route path="*" element={<NoMatch />} />
-                </Routes>
+                        <Route path="*" element={<NoMatch />} />
+                    </Routes>
+                </UserFetch>
             </AuthProvider>
         </>
     )

@@ -15,7 +15,7 @@ const Dashboard = () => {
             <div className="mt-36 flex flex-col items-center justify-center">
                 <h1 className="text-5xl font-semibold ">
                     {' '}
-                    Welcome to Dashboard {auth.admin}
+                    Welcome to Dashboard {auth.admin.name}
                 </h1>
                 <br />
                 <div className="flex flex-col space-y-4">

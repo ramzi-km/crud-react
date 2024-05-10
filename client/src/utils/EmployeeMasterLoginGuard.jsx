@@ -3,8 +3,13 @@ import { useAuth } from './Auth'
 
 const EmployeeMasterLoginGuard = () => {
     const auth = useAuth()
-    const admin = auth.admin
-    return admin ? <Navigate to="/employeeMaster/dashboard" /> : <Outlet />
+    const adminLoggedIn = auth.admin?.isLoggedIn
+
+    return adminLoggedIn ? (
+        <Navigate to="/employeeMaster/dashboard" />
+    ) : (
+        <Outlet />
+    )
 }
 
 export default EmployeeMasterLoginGuard

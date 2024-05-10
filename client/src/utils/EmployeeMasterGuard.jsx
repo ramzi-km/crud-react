@@ -5,8 +5,8 @@ const EmployeeMasterGuard = () => {
     const auth = useAuth()
     const location = useLocation()
 
-    const admin = auth.admin
-    return admin ? (
+    const adminLoggedIn = auth.admin?.isLoggedIn
+    return adminLoggedIn ? (
         <Outlet />
     ) : (
         <Navigate

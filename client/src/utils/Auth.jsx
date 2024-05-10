@@ -8,10 +8,14 @@ export const AuthProvider = ({ children }) => {
     const [admin, setAdmin] = useState(null)
 
     const adminLogin = (admin) => {
+        admin.isLoggedIn = true
         setAdmin(admin)
     }
     const adminLogout = () => {
-        setAdmin(null)
+        const admin = {
+            isLoggedIn: false,
+        }
+        setAdmin(admin)
     }
 
     return (
