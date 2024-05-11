@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../../utils/Auth'
+import { useAuth } from '../../../services/providers/Auth'
 import { FaArrowRight, FaArrowRightFromBracket } from 'react-icons/fa6'
 
 const Dashboard = () => {

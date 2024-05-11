@@ -317,7 +317,7 @@ export const EmployeeManagement = () => {
                     <div className="form-control mt-6">
                         <button
                             type="submit"
-                            className="text-textp btn btn-primary"
+                            className="btn btn-accent text-black"
                         >
                             Submit
                             <span className="text-textp loading loading-spinner loading-sm mb-1 ml-5"></span>

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useAuth } from '../../../utils/Auth'
+import { useAuth } from '../../../services/providers/Auth'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
-import apiInstance from '../../../utils/api/apiInstance'
+import apiInstance from '../../../services/api/apiInstance'
 
 const EmployeeMasterLogin = () => {
     const [errMessage, setErrMessage] = useState(null)
@@ -19,7 +19,6 @@ const EmployeeMasterLogin = () => {
     const onSubmit = async (data) => {
         try {
             const res = await apiInstance.post('/employeeMaster/login', data)
-            console.log(res)
             auth.employeeMasterLogin(res.data.employeeMaster)
             navigate(redirectPath)
         } catch (error) {

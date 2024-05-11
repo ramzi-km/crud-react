@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FaArrowRightFromBracket } from 'react-icons/fa6'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../utils/Auth'
+import { useAuth } from '../../../services/providers/Auth'
 import { useState } from 'react'
-import apiInstance from '../../../utils/api/apiInstance'
+import apiInstance from '../../../services/api/apiInstance'
 
 const NavbarEmployeeMaster = () => {
     const auth = useAuth()

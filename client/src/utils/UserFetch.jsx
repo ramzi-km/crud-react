@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
-import { useAuth } from './Auth'
+import { useAuth } from '../services/providers/Auth'
 import Loading from '../components/shared/loading/Loading'
-import apiInstance from './api/apiInstance'
+import apiInstance from '../services/api/apiInstance'
 
 const UserFetch = ({ children }) => {
     const [fetchingEmployeeMaster, setFetchingEmployeeMaster] = useState(true)
@@ -14,8 +14,9 @@ const UserFetch = ({ children }) => {
                 try {
                     const res = await apiInstance.get('/employeeMaster')
                     await auth.employeeMasterLogin(res.data.employeeMaster)
-                    setFetchingEmployeeMaster(false)
                 } catch (error) {
+                    console.error(error)
+                } finally {
                     setFetchingEmployeeMaster(false)
                 }
             }

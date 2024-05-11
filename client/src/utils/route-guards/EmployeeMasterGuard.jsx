@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from './Auth'
+import { useAuth } from '../../services/providers/Auth'
 
 const EmployeeMasterGuard = () => {
     const auth = useAuth()
