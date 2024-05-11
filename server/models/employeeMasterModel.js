@@ -1,22 +1,24 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.connection.js';
 
-const employee_master = sequelize.define(
+const EmployeeMaster = sequelize.define(
   'employee_master',
   {
     name: {
       type: DataTypes.STRING,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     },
-
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
-  },
-  { timestamps: true }
+  }
 );
 
 //Export the model
-export default employee_master;
+export default EmployeeMaster;

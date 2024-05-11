@@ -5,21 +5,27 @@ import { createContext, useContext, useState } from 'react'
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
-    const [admin, setAdmin] = useState(null)
+    const [employeeMaster, setEmployeeMaster] = useState(null)
 
-    const adminLogin = (admin) => {
-        admin.isLoggedIn = true
-        setAdmin(admin)
+    const employeeMasterLogin = (employeeMaster) => {
+        employeeMaster.isLoggedIn = true
+        setEmployeeMaster(employeeMaster)
     }
-    const adminLogout = () => {
-        const admin = {
+    const employeeMasterLogout = () => {
+        const employeeMaster = {
             isLoggedIn: false,
         }
-        setAdmin(admin)
+        setEmployeeMaster(employeeMaster)
     }
 
     return (
-        <AuthContext.Provider value={{ admin, adminLogin, adminLogout }}>
+        <AuthContext.Provider
+            value={{
+                employeeMaster,
+                employeeMasterLogin,
+                employeeMasterLogout,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )

@@ -7,7 +7,7 @@ const NavbarEmployeeMaster = () => {
     const navigate = useNavigate()
 
     const handleLogout = () => {
-        auth.adminLogout()
+        auth.employeeMasterLogout()
         navigate('/employeeMaster/login')
     }
 

@@ -5,6 +5,7 @@ import logger from 'morgan';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 
+
 import { connectToDb } from './config/db.connection.js';
 
 import employeeMasterRoute from './routes/employeeMasterRouter.js';
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 8000;
 
 // connect to database
 connectToDb();
+
 
 //middlewares
 app.use(express.urlencoded({ extended: true }));

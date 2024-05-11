@@ -12,7 +12,7 @@ export async function employeeMasterLogin(req, res) {
         // Find the employee master by email
         const employeeMaster = await employeeMasterModel.findOne({ where: { email: email } });
 
-        if (employee) {
+        if (employeeMaster) {
             // Compare passwords
             const comparison = await bcrypt.compare(password, employeeMaster.password);
             if (comparison) {
@@ -40,7 +40,7 @@ export async function employeeMasterLogin(req, res) {
                 res.status(403).json({ message: 'Incorrect password' });
             }
         } else {
-            res.status(404).json({ message: 'Employee not found' });
+            res.status(404).json({ message: 'Employee Master not found' });
         }
     } catch (err) {
         console.error(err);
@@ -50,7 +50,7 @@ export async function employeeMasterLogin(req, res) {
 
 export async function employeeMasterLogout(req, res) {
     try {
-        res.cookie('employeeToken', '', {
+        res.cookie('employeeMasterToken', '', {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
@@ -66,7 +66,7 @@ export async function employeeMasterLogout(req, res) {
 export async function getEmployeeMaster(req, res) {
     try {
         // Return the employee data stored in req.employee
-        res.status(200).json({ employee: req.employee });
+        res.status(200).json({ employeeMaster: req.employeeMaster });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });

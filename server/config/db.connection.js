@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 
+
 const sequelize = new Sequelize(
   process.env.MYSQL_DATABASE,
   process.env.MYSQL_USER,
@@ -17,6 +18,7 @@ const connectToDb = async () => {
     // Sync all models
     await sequelize.sync({ force: false });
     console.log('All models were synchronized successfully.');
+
   } catch (error) {
     console.error('Unable to connect to the db', error);
   }

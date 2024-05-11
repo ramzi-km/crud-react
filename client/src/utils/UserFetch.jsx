@@ -1,24 +1,32 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
 import { useAuth } from './Auth'
+import Loading from '../components/shared/loading/Loading'
+import apiInstance from './api/apiInstance'
 
 const UserFetch = ({ children }) => {
-    const [isLoading, setIsLoading] = useState(true)
+    const [fetchingEmployeeMaster, setFetchingEmployeeMaster] = useState(true)
     const auth = useAuth()
 
     useEffect(() => {
-        if (!auth.admin) {
-            setTimeout(() => {
-                auth.adminLogin({ name: 'admin' })
-                setIsLoading(false)
-            }, 5000)
+        if (!auth.employeeMaster) {
+            const fetchEmployeeMaster = async () => {
+                try {
+                    const res = await apiInstance.get('/employeeMaster')
+                    auth.employeeMasterLogin(res.employeeMaster)
+                    setFetchingEmployeeMaster(false)
+                } catch (error) {
+                    setFetchingEmployeeMaster(false)
+                }
+            }
+            fetchEmployeeMaster()
         } else {
-            setIsLoading(false)
+            setFetchingEmployeeMaster(false)
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    return isLoading ? <p>Loading...</p> : children
+    return fetchingEmployeeMaster ? <Loading /> : children
 }
 
 export default UserFetch

@@ -3,9 +3,9 @@ import { useAuth } from './Auth'
 
 const EmployeeMasterLoginGuard = () => {
     const auth = useAuth()
-    const adminLoggedIn = auth.admin?.isLoggedIn
+    const employeeMasterLoggedIn = auth.employeeMaster?.isLoggedIn
 
-    return adminLoggedIn ? (
+    return employeeMasterLoggedIn ? (
         <Navigate to="/employeeMaster/dashboard" />
     ) : (
         <Outlet />
