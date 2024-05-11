@@ -1,15 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../../utils/Auth'
 import { FaArrowRight, FaArrowRightFromBracket } from 'react-icons/fa6'
 
 const Dashboard = () => {
     const auth = useAuth()
-    const navigate = useNavigate()
 
-    const handleLogout = () => {
-        auth.employeeMasterLogout()
-        navigate('/employeeMaster/login')
-    }
     return (
         <>
             <div className="mt-36 flex flex-col items-center justify-center">
@@ -25,7 +20,12 @@ const Dashboard = () => {
                     >
                         Employee Management <FaArrowRight />
                     </Link>
-                    <button onClick={handleLogout} className="btn btn-error">
+                    <button
+                        onClick={() =>
+                            document.getElementById('logout-modal').showModal()
+                        }
+                        className="btn btn-error"
+                    >
                         Logout <FaArrowRightFromBracket />
                     </button>
                 </div>

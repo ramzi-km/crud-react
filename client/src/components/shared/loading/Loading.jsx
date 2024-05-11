@@ -8,7 +8,6 @@ const Loading = ({
     speed = '3.5',
     color = 'oklch(var(--a))',
 }) => {
-    console.log(size, stroke, speed, color)
     return (
         <>
             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-80 text-accent">
