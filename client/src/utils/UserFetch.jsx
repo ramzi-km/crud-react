@@ -13,7 +13,7 @@ const UserFetch = ({ children }) => {
             const fetchEmployeeMaster = async () => {
                 try {
                     const res = await apiInstance.get('/employeeMaster')
-                    auth.employeeMasterLogin(res.data.employeeMaster)
+                    await auth.employeeMasterLogin(res.data.employeeMaster)
                     setFetchingEmployeeMaster(false)
                 } catch (error) {
                     setFetchingEmployeeMaster(false)
