@@ -8,14 +8,18 @@ import apiInstance from '../../../services/api/apiInstance'
 import Loading from '../../shared/loading/Loading'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import EditEmpModal from './editEmpModal/EditEmpModal'
+import DeleteEmpModal from './deleteEmpModal/DeleteEmpModal'
 
 export const EmployeeManagement = () => {
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
+
     const [employees, setEmployees] = useState([])
     const [editingEmployee, setEditingEmployee] = useState([])
+    const [deletingEmployee, setDeletingEmployee] = useState([])
     const [fetchingEmployees, setFetchingEmployees] = useState()
     const [filter, setFilter] = useState(queryParams.get('filter') ?? '')
+
     // eslint-disable-next-line no-unused-vars
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -76,6 +80,13 @@ export const EmployeeManagement = () => {
                 })
             )
         }
+    }
+    const handleDeletedEmployee = (empId) => {
+        setEmployees((prevEmployees) =>
+            prevEmployees.filter((employee) => {
+                return employee.id !== empId
+            })
+        )
     }
 
     return (
@@ -189,7 +200,19 @@ export const EmployeeManagement = () => {
                                                 >
                                                     <MdEdit size={15} />
                                                 </button>
-                                                <button className="btn btn-outline btn-error btn-xs flex items-center justify-center">
+                                                <button
+                                                    onClick={() => {
+                                                        setDeletingEmployee(
+                                                            employee
+                                                        )
+                                                        document
+                                                            .getElementById(
+                                                                'deleteEmp-modal'
+                                                            )
+                                                            .showModal()
+                                                    }}
+                                                    className="btn btn-outline btn-error btn-xs flex items-center justify-center"
+                                                >
                                                     <FaTrashCan size={15} />
                                                 </button>
                                             </div>
@@ -228,6 +251,11 @@ export const EmployeeManagement = () => {
             <EditEmpModal
                 sentUpdatedEmployee={handleUpdatedEmployee}
                 employee={editingEmployee}
+            />
+            {/* delete employee modal */}
+            <DeleteEmpModal
+                employee={deletingEmployee}
+                sentDeletedEmpId={handleDeletedEmployee}
             />
         </>
     )

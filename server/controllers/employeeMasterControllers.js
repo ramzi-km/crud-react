@@ -124,3 +124,20 @@ export const updateEmployee = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const deleteEmployee = async (req, res) => {
+  try {
+    const { empId } = req.params;
+    const deletingEmployee = await employeeModel.findByPk(empId);
+
+    if (!deletingEmployee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    await deletingEmployee.destroy();
+
+    return res.status(200).json({ message: "Employee deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

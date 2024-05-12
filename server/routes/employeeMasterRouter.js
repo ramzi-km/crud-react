@@ -14,6 +14,7 @@ import {
 } from "../controllers/employeeMasterAuthControllers.js";
 import {
   createEmployee,
+  deleteEmployee,
   fetchAllEmployees,
   updateEmployee,
 } from "../controllers/employeeMasterControllers.js";
@@ -29,5 +30,6 @@ router.post("/logout", employeeMasterLogout);
 router.get("/employees", verifyEmployeeMaster, fetchAllEmployees);
 router.post("/employees", verifyEmployeeMaster, createEmployee);
 router.patch("/employees/:empId", verifyEmployeeMaster, updateEmployee);
+router.delete("/employees/:empId", verifyEmployeeMaster, deleteEmployee);
 
 export default router;
