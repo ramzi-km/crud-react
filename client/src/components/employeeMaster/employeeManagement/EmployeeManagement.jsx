@@ -1,9 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MdEdit } from 'react-icons/md'
 import { FaTrashCan } from 'react-icons/fa6'
 import { MdAdd } from 'react-icons/md'
 import AddEmpModal from './addEmpModal/AddEmpModal'
+import { useEffect, useState } from 'react'
+import apiInstance from '../../../services/api/apiInstance'
+import Loading from '../../shared/loading/Loading'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 export const EmployeeManagement = () => {
+    const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
+    const [employees, setEmployees] = useState([])
+    const [fetchingEmployees, setFetchingEmployees] = useState()
+    const [filter, setFilter] = useState(queryParams.get('filter') ?? '')
+    // eslint-disable-next-line no-unused-vars
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        setFetchingEmployees(true)
+        setSearchParams({ filter })
+        const fetchEmployees = async () => {
+            try {
+                const res = await apiInstance.get('/employeeMaster/employees', {
+                    params: {
+                        filter,
+                    },
+                })
+                setEmployees(res.data.employees)
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setFetchingEmployees(false)
+            }
+        }
+        fetchEmployees()
+    }, [filter])
+
+    const transformDepartment = (department) => {
+        switch (department) {
+            case 'accounts':
+                return 'Accounts & finance'
+            case 'ui':
+                return 'UI/UX'
+            case 'dev':
+                return 'Software development'
+            case 'hr':
+                return 'Human resources'
+            case 'sales':
+                return 'Sales & marketing'
+            default:
+                return 'Human resources'
+        }
+    }
     return (
         <>
             <h1 className="mt-10 text-center text-2xl font-semibold">
@@ -26,12 +75,19 @@ export const EmployeeManagement = () => {
                         <select
                             id="sort"
                             className=" text-textp block rounded-lg border border-gray-300 bg-base-200  p-1 text-sm focus:border-blue-500 focus:ring-blue-500 md:p-2.5"
+                            defaultValue={filter}
+                            onChange={(e) => {
+                                setFilter(e.target.value)
+                            }}
                         >
-                            <option>Accounts and finance</option>
-                            <option>Human resources</option>
-                            <option>UX/UI</option>
-                            <option>Software development</option>
-                            <option>Sales and marketing</option>
+                            <option value="">All</option>
+                            <option value="accounts">
+                                Accounts and finance
+                            </option>
+                            <option value="hr">Human resources</option>
+                            <option value="ui">UX/UI</option>
+                            <option value="dev">Software development</option>
+                            <option value="sales">Sales and marketing</option>
                         </select>
                     </div>
                 </div>
@@ -50,147 +106,69 @@ export const EmployeeManagement = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 1 */}
-                            <tr>
-                                <th>1</th>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle h-12 w-12">
-                                                <img
-                                                    src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png"
-                                                    alt="Avatar Tailwind CSS Component"
-                                                />
+                            {fetchingEmployees ? (
+                                <tr className="h-40">
+                                    <td colSpan="6" className="relative">
+                                        <Loading size="50" />
+                                    </td>
+                                </tr>
+                            ) : employees[0] ? (
+                                employees.map((employee, index) => (
+                                    <tr key={employee.id}>
+                                        <th>{index + 1}</th>
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle h-12 w-12">
+                                                        <img
+                                                            src={
+                                                                employee.profilePic
+                                                            }
+                                                            alt="Avatar Tailwind CSS Component"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold">
+                                                        {employee.firstName +
+                                                            ' ' +
+                                                            employee.lastName}
+                                                    </div>
+                                                    <div className="text-sm opacity-50">
+                                                        {employee.empCode}
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <div className="font-bold">
-                                                Hart Hagerty
+                                        </td>
+                                        <td>
+                                            {transformDepartment(
+                                                employee.department
+                                            )}
+                                        </td>
+                                        <td>{employee.email}</td>
+                                        <th>{employee.contact}</th>
+                                        <th>
+                                            <div className="flex items-center justify-center space-x-2">
+                                                <button className="btn btn-outline btn-primary btn-xs flex items-center justify-center">
+                                                    <MdEdit size={15} />
+                                                </button>
+                                                <button className="btn btn-outline btn-error btn-xs flex items-center justify-center">
+                                                    <FaTrashCan size={15} />
+                                                </button>
                                             </div>
-                                            <div className="text-sm opacity-50">
-                                                United States
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    Zemlak, Daniel and Leannon
-                                    <br />
-                                    <span className="badge badge-ghost badge-sm">
-                                        Desktop Support Technician
-                                    </span>
-                                </td>
-                                <td>Purple</td>
-                                <th>
-                                    <button className="btn btn-ghost btn-xs">
-                                        details
-                                    </button>
-                                </th>
-                                <th>
-                                    <div className="flex items-center justify-center space-x-2">
-                                        <button className="btn btn-outline btn-primary btn-xs flex items-center justify-center">
-                                            <MdEdit size={15} />
-                                        </button>
-                                        <button className="btn btn-outline btn-error btn-xs flex items-center justify-center">
-                                            <FaTrashCan size={15} />
-                                        </button>
-                                    </div>
-                                </th>
-                            </tr>
-                            {/* row 2 */}
-                            <tr>
-                                <th>2</th>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle h-12 w-12">
-                                                <img
-                                                    src="https://img.daisyui.com/tailwind-css-component-profile-3@56w.png"
-                                                    alt="Avatar Tailwind CSS Component"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="font-bold">
-                                                Brice Swyre
-                                            </div>
-                                            <div className="text-sm opacity-50">
-                                                China
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    Carroll Group
-                                    <br />
-                                    <span className="badge badge-ghost badge-sm">
-                                        Tax Accountant
-                                    </span>
-                                </td>
-                                <td>Red</td>
-                                <th>
-                                    <button className="btn btn-ghost btn-xs">
-                                        details
-                                    </button>
-                                </th>
-                                <th>
-                                    <div className="flex items-center justify-center space-x-2">
-                                        <button className="btn btn-outline btn-primary btn-xs flex items-center justify-center">
-                                            <MdEdit size={15} />
-                                        </button>
-                                        <button className="btn btn-outline btn-error btn-xs flex items-center justify-center">
-                                            <FaTrashCan size={15} />
-                                        </button>
-                                    </div>
-                                </th>
-                            </tr>
-                            {/* row 3 */}
-                            <tr>
-                                <th>3</th>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle h-12 w-12">
-                                                <img
-                                                    src="https://img.daisyui.com/tailwind-css-component-profile-4@56w.png"
-                                                    alt="Avatar Tailwind CSS Component"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="font-bold">
-                                                Marjy Ferencz
-                                            </div>
-                                            <div className="text-sm opacity-50">
-                                                Russia
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    Rowe-Schoen
-                                    <br />
-                                    <span className="badge badge-ghost badge-sm">
-                                        Office Assistant I
-                                    </span>
-                                </td>
-                                <td>Crimson</td>
-                                <th>
-                                    <button className="btn btn-ghost btn-xs">
-                                        details
-                                    </button>
-                                </th>
-                                <th>
-                                    <div className="flex items-center justify-center space-x-2">
-                                        <button className="btn btn-outline btn-primary btn-xs flex items-center justify-center">
-                                            <MdEdit size={15} />
-                                        </button>
-                                        <button className="btn btn-outline btn-error btn-xs flex items-center justify-center">
-                                            <FaTrashCan size={15} />
-                                        </button>
-                                    </div>
-                                </th>
-                            </tr>
+                                        </th>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td
+                                        colSpan="6"
+                                        className="h-20 text-center text-xl font-semibold"
+                                    >
+                                        No employees to show
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                         {/* foot */}
                         <tfoot className="bg-gray-300 text-sm">

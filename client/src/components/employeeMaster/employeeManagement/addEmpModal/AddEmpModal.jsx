@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { GiCrossMark } from 'react-icons/gi'
+import apiInstance from '../../../../services/api/apiInstance'
 
 const AddEmpModal = () => {
     const [errMessage, setErrMessage] = useState(null)
@@ -12,10 +13,12 @@ const AddEmpModal = () => {
 
     const onAddEmpFormSubmit = async (data) => {
         try {
-            // const res = await apiInstance.post('/employeeMaster/login', data)
-            data.firstName = data.firstName.trim()
-            data.lastName = data.lastName.trim()
-            console.log(data)
+            const res = await apiInstance.post(
+                '/employeeMaster/employees',
+                data
+            )
+            console.log(res)
+            closeAddEmpModal()
         } catch (error) {
             console.log(error)
             setErrMessage(
@@ -152,8 +155,9 @@ const AddEmpModal = () => {
                         {...register('department', {
                             required: 'Department is required',
                         })}
+                        defaultValue={''}
                     >
-                        <option selected disabled value="">
+                        <option disabled value="">
                             Department
                         </option>
                         <option value="accounts">Account & finance</option>
