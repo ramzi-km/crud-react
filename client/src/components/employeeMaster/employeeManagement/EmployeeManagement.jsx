@@ -7,11 +7,13 @@ import { useEffect, useState } from 'react'
 import apiInstance from '../../../services/api/apiInstance'
 import Loading from '../../shared/loading/Loading'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import EditEmpModal from './editEmpModal/EditEmpModal'
 
 export const EmployeeManagement = () => {
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
     const [employees, setEmployees] = useState([])
+    const [editingEmployee, setEditingEmployee] = useState([])
     const [fetchingEmployees, setFetchingEmployees] = useState()
     const [filter, setFilter] = useState(queryParams.get('filter') ?? '')
     // eslint-disable-next-line no-unused-vars
@@ -53,6 +55,29 @@ export const EmployeeManagement = () => {
                 return 'Human resources'
         }
     }
+    const handleNewEmployee = (newEmployee) => {
+        if (filter == '' || filter == newEmployee.department) {
+            setEmployees((prevEmployees) => [...prevEmployees, newEmployee])
+        }
+    }
+    const handleUpdatedEmployee = (updatedEmployee) => {
+        if (filter == '' || filter == updatedEmployee.department) {
+            setEmployees((prevEmployees) =>
+                prevEmployees.map((employee) => {
+                    return employee.id == updatedEmployee.id
+                        ? updatedEmployee
+                        : employee
+                })
+            )
+        } else {
+            setEmployees((prevEmployees) =>
+                prevEmployees.filter((employee) => {
+                    return employee.id !== updatedEmployee.id
+                })
+            )
+        }
+    }
+
     return (
         <>
             <h1 className="mt-10 text-center text-2xl font-semibold">
@@ -149,7 +174,19 @@ export const EmployeeManagement = () => {
                                         <th>{employee.contact}</th>
                                         <th>
                                             <div className="flex items-center justify-center space-x-2">
-                                                <button className="btn btn-outline btn-primary btn-xs flex items-center justify-center">
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingEmployee(
+                                                            employee
+                                                        )
+                                                        document
+                                                            .getElementById(
+                                                                'editEmp-modal'
+                                                            )
+                                                            .showModal()
+                                                    }}
+                                                    className="btn btn-outline btn-primary btn-xs flex items-center justify-center"
+                                                >
                                                     <MdEdit size={15} />
                                                 </button>
                                                 <button className="btn btn-outline btn-error btn-xs flex items-center justify-center">
@@ -186,7 +223,12 @@ export const EmployeeManagement = () => {
             </section>
 
             {/* add employee modal */}
-            <AddEmpModal />
+            <AddEmpModal sentNewEmployee={handleNewEmployee} />
+            {/* edit employee modal */}
+            <EditEmpModal
+                sentUpdatedEmployee={handleUpdatedEmployee}
+                employee={editingEmployee}
+            />
         </>
     )
 }

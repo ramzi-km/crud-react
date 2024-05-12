@@ -1,25 +1,29 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { GiCrossMark } from 'react-icons/gi'
 import apiInstance from '../../../../services/api/apiInstance'
+import { GiCrossMark } from 'react-icons/gi'
 
-const AddEmpModal = ({ sentNewEmployee }) => {
+const EditEmpModal = ({ sentUpdatedEmployee, employee }) => {
     const [errMessage, setErrMessage] = useState(null)
 
-    const { register, handleSubmit, formState, reset } = useForm({
+    const { register, handleSubmit, formState, reset, getValues } = useForm({
+        values: employee,
         mode: 'onTouched',
     })
     const { errors, isValid, isSubmitting } = formState
 
-    const onAddEmpFormSubmit = async (data) => {
+    const onEditEmpFormSubmit = async (data) => {
         try {
-            const res = await apiInstance.post(
-                '/employeeMaster/employees',
+            if (!areFormValuesChanged()) {
+                return
+            }
+            const res = await apiInstance.patch(
+                `/employeeMaster/employees/${employee.id}`,
                 data
             )
-            sentNewEmployee(res.data.newEmployee)
-            closeAddEmpModal()
+            sentUpdatedEmployee(res.data.updatedEmployee)
+            closeEditEmpModal()
         } catch (error) {
             console.log(error)
             setErrMessage(
@@ -28,24 +32,35 @@ const AddEmpModal = ({ sentNewEmployee }) => {
         }
     }
 
-    const closeAddEmpModal = () => {
+    const closeEditEmpModal = () => {
         setErrMessage('')
         reset()
-        document.getElementById('createEmployee-modal').close()
+        document.getElementById('editEmp-modal').close()
+    }
+
+    const [initialFormValues, setInitialFormValues] = useState({})
+
+    useEffect(() => {
+        setInitialFormValues(employee)
+    }, [employee])
+
+    // Function to compare current form values with initial values
+    const areFormValuesChanged = () => {
+        return JSON.stringify(getValues()) !== JSON.stringify(initialFormValues)
     }
 
     return (
-        <dialog id="createEmployee-modal" className="modal">
+        <dialog id="editEmp-modal" className="modal">
             <form
                 className="text-textp modal-box max-w-max bg-base-300"
-                onSubmit={handleSubmit(onAddEmpFormSubmit)}
+                onSubmit={handleSubmit(onEditEmpFormSubmit)}
                 noValidate
             >
                 <div className="my-4 text-center text-2xl font-semibold">
-                    <p>Add Employee</p>
+                    <p>Update Employee</p>
                 </div>
                 <button
-                    onClick={closeAddEmpModal}
+                    onClick={closeEditEmpModal}
                     type="button"
                     className="btn btn-circle btn-ghost btn-sm absolute right-4 top-4 text-2xl"
                 >
@@ -240,4 +255,4 @@ const AddEmpModal = ({ sentNewEmployee }) => {
     )
 }
 
-export default AddEmpModal
+export default EditEmpModal
