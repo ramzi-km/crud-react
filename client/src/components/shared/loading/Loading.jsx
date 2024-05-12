@@ -10,7 +10,7 @@ const Loading = ({
 }) => {
     return (
         <>
-            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-80 text-accent">
+            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-70 text-accent">
                 <l-hatch
                     size={size}
                     stroke={stroke}

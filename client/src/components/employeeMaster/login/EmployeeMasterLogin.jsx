@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useAuth } from '../../../services/providers/Auth'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { DevTool } from '@hookform/devtools'
 import apiInstance from '../../../services/api/apiInstance'
 
 const EmployeeMasterLogin = () => {
@@ -11,7 +10,7 @@ const EmployeeMasterLogin = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const redirectPath = location.state?.path || '/employeeMaster/dashboard'
-    const { register, control, handleSubmit, formState } = useForm({
+    const { register, handleSubmit, formState } = useForm({
         mode: 'onTouched',
     })
     const { errors, isValid, isSubmitting } = formState
@@ -125,11 +124,10 @@ const EmployeeMasterLogin = () => {
                                 >
                                     Login
                                     {isSubmitting && (
-                                        <span className="text-textp loading loading-spinner loading-sm mb-1 ml-5"></span>
+                                        <span className="loading loading-spinner loading-sm mb-1 ml-5"></span>
                                     )}
                                 </button>
                             </form>
-                            <DevTool control={control} />
                         </div>
                     </div>
                 </div>

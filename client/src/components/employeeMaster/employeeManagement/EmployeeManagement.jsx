@@ -1,7 +1,7 @@
 import { MdEdit } from 'react-icons/md'
 import { FaTrashCan } from 'react-icons/fa6'
 import { MdAdd } from 'react-icons/md'
-import { GiCrossMark } from 'react-icons/gi'
+import AddEmpModal from './addEmpModal/AddEmpModal'
 
 export const EmployeeManagement = () => {
     return (
@@ -208,124 +208,7 @@ export const EmployeeManagement = () => {
             </section>
 
             {/* add employee modal */}
-            <dialog id="createEmployee-modal" className="modal">
-                <form className="text-textp modal-box max-w-max bg-base-300">
-                    <div className="my-4 text-center text-2xl font-semibold">
-                        <p>Add Employee</p>
-                    </div>
-                    <button
-                        onClick={() =>
-                            document
-                                .getElementById('createEmployee-modal')
-                                .close()
-                        }
-                        type="button"
-                        className="btn btn-circle btn-ghost btn-sm absolute right-4 top-4 text-2xl"
-                    >
-                        <GiCrossMark />
-                    </button>
-                    <div className="alert alert-error mt-3 flex h-10">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 shrink-0 stroke-current"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
-                        <span>errMessage </span>
-                    </div>
-
-                    <div className="flex flex-col md:flex-row md:space-x-3">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">First name</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="eg:John"
-                                className="input input-bordered"
-                                required
-                            />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Last name</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="e.g:Doe"
-                                className="input input-bordered"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Email id</span>
-                        </label>
-                        <input
-                            type="email"
-                            placeholder="eg:john@gmail.com"
-                            className="input input-bordered"
-                            required
-                        />
-                    </div>
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Department</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="description"
-                            className="input input-bordered"
-                            required
-                        />
-                    </div>
-                    <div className="flex flex-col md:flex-row md:space-x-3">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">
-                                    Employee code
-                                </span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="eg: emp124"
-                                className="input input-bordered"
-                                required
-                            />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Contact No</span>
-                            </label>
-                            <input
-                                type="tel"
-                                placeholder="+91 :"
-                                className="input input-bordered"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-control mt-6">
-                        <button
-                            type="submit"
-                            className="btn btn-accent text-black"
-                        >
-                            Submit
-                            <span className="text-textp loading loading-spinner loading-sm mb-1 ml-5"></span>
-                        </button>
-                    </div>
-                </form>
-            </dialog>
-            {/* add employee modal end */}
+            <AddEmpModal />
         </>
     )
 }
