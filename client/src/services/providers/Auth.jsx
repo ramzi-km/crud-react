@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         const employee = {
             isLoggedIn: false,
         }
-        setEmployeeMaster(employee)
+        setEmployee(employee)
     }
 
     const employeeMasterLogin = (employeeMaster) => {

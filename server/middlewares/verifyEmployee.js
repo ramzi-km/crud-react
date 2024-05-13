@@ -1,28 +1,28 @@
 import jwt from "jsonwebtoken";
-import employeeMasterModel from "../models/employeeMasterModel.js";
+import employeeModel from "../models/employeeModel.js";
 
-export default async function verifyEmployeeMaster(req, res, next) {
+export default async function verifyEmployee(req, res, next) {
   try {
-    const token = req.cookies.employeeMasterToken;
+    const token = req.cookies.employee;
     if (!token) {
       return res
         .status(401)
         .json({ message: "Unauthorized: No token provided." });
     }
 
-    const secret = process.env.JWT_SECRET_KEY_EMPLOYEE_MASTER;
+    const secret = process.env.JWT_SECRET_KEY_EMPLOYEE;
     const decoded = jwt.verify(token, secret);
 
     // Check if the decoded user ID exists in the database
-    const employeeMaster = await employeeMasterModel.findOne({
+    const employee = await employeeModel.findOne({
       where: { id: decoded._id },
       attributes: { exclude: ["password"] },
     });
 
-    if (!employeeMaster) {
-      return res.status(401).json({ message: "Employee Master not found." });
+    if (!employee) {
+      return res.status(401).json({ message: "Employee not found." });
     }
-    req.employeeMaster = employeeMaster;
+    req.employee = employee;
     next();
   } catch (err) {
     console.error(err);

@@ -6,12 +6,14 @@ import verifyEmployeeMaster from "../middlewares/verifyEmployeeMaster.js";
 
 //-------------------   controllers   --------------------------------//
 
-//--------------employeeMasterAuthControllers--------------//
+//--------------employeeMaster-auth-controllers--------------//
 import {
   employeeMasterLogin,
   employeeMasterLogout,
   getEmployeeMaster,
 } from "../controllers/employeeMasterAuthControllers.js";
+
+//--------------employee-management-controllers--------------//
 import {
   createEmployee,
   deleteEmployee,
