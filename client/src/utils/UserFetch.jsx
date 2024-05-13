@@ -30,7 +30,7 @@ const UserFetch = ({ children }) => {
             const fetchEmployee = async () => {
                 try {
                     const res = await apiInstance.get('/employee')
-                    await auth.employeeLogin(res.data.employee)
+                    auth.employeeLogin(res.data.employee)
                 } catch (error) {
                     console.error(error)
                 } finally {

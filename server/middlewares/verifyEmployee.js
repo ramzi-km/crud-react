@@ -3,7 +3,7 @@ import employeeModel from "../models/employeeModel.js";
 
 export default async function verifyEmployee(req, res, next) {
   try {
-    const token = req.cookies.employee;
+    const token = req.cookies.employeeToken;
     if (!token) {
       return res
         .status(401)

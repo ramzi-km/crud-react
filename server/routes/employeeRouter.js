@@ -11,6 +11,7 @@ import {
   employeeLogin,
   employeeLogout,
   fetchEmployee,
+  updateProfile,
 } from "../controllers/employeeControllers.js";
 
 //-------------------   ------------   --------------------------------//
@@ -19,5 +20,8 @@ import {
 router.get("/employee", verifyEmployee, fetchEmployee);
 router.post("/login", employeeLogin);
 router.post("/logout", employeeLogout);
+
+// employee profile //
+router.patch("/employee", verifyEmployee, updateProfile);
 
 export default router;

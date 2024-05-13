@@ -172,7 +172,6 @@ const EditEmpModal = ({ sentUpdatedEmployee, employee }) => {
                         {...register('department', {
                             required: 'Department is required',
                         })}
-                        defaultValue={''}
                     >
                         <option disabled value="">
                             Department

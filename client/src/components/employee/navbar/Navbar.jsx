@@ -26,7 +26,7 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="navbar border-b-2 border-gray-600 bg-accent">
+            <div className="navbar fixed border-b-2 border-gray-600 bg-accent">
                 <div className="navbar-start"></div>
                 <div className="navbar-center">
                     <Link to="/home" className="btn btn-ghost text-xl">

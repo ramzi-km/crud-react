@@ -68,3 +68,43 @@ export const fetchEmployee = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const empId = req.employee.id;
+    const { firstName, lastName, email, department, empCode, contact } =
+      req.body;
+
+    const updatingEmployee = await employeeModel.findByPk(empId);
+
+    const existingEmail = await employeeModel.findOne({ where: { email } });
+    const existingEmpCode = await employeeModel.findOne({ where: { empCode } });
+
+    if (!updatingEmployee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+    if (existingEmail && updatingEmployee.id !== existingEmail.id) {
+      return res.status(404).json({ message: "Email already exist" });
+    }
+    if (existingEmpCode && updatingEmployee.id !== existingEmpCode.id) {
+      return res.status(404).json({ message: "Employee code already exist" });
+    }
+
+    // Update the employee fields
+    updatingEmployee.firstName = firstName || updatingEmployee.firstName;
+    updatingEmployee.lastName = lastName || updatingEmployee.lastName;
+    updatingEmployee.email = email || updatingEmployee.email;
+    updatingEmployee.department = department || updatingEmployee.department;
+    updatingEmployee.empCode = empCode || updatingEmployee.empCode;
+    updatingEmployee.contact = contact || updatingEmployee.contact;
+
+    // Save the updated employee details
+    await updatingEmployee.save();
+
+    return res
+      .status(200)
+      .json({ updatedEmployee: updatingEmployee, message: "success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
