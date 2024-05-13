@@ -6,6 +6,18 @@ const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
     const [employeeMaster, setEmployeeMaster] = useState(null)
+    const [employee, setEmployee] = useState(null)
+
+    const employeeLogin = (employee) => {
+        employee.isLoggedIn = true
+        setEmployee(employee)
+    }
+    const employeeLogout = () => {
+        const employee = {
+            isLoggedIn: false,
+        }
+        setEmployeeMaster(employee)
+    }
 
     const employeeMasterLogin = (employeeMaster) => {
         employeeMaster.isLoggedIn = true
@@ -21,6 +33,9 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
+                employee,
+                employeeLogin,
+                employeeLogout,
                 employeeMaster,
                 employeeMasterLogin,
                 employeeMasterLogout,

@@ -1,8 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import Home from './components/home/Home'
 import NoMatch from './components/no-match/NoMatch'
-import Navbar from './components/navbar/Navbar'
-import Login from './components/login/Login'
 import EmployeeMasterLogin from './components/employeeMaster/login/EmployeeMasterLogin'
 import Dashboard from './components/employeeMaster/dashboard/Dashboard'
 import EmployeeMasterGuard from './utils/route-guards/EmployeeMasterGuard'
@@ -11,7 +8,10 @@ import EmployeeMasterLoginGuard from './utils/route-guards/EmployeeMasterLoginGu
 import NavbarEmployeeMaster from './components/employeeMaster/navbar/NavbarEmployeeMaster'
 import { EmployeeManagement } from './components/employeeMaster/employeeManagement/EmployeeManagement'
 import UserFetch from './utils/UserFetch'
-
+import Navbar from './components/employee/navbar/Navbar'
+import Login from './components/employee/login/Login'
+import Home from './components/employee/home/Home'
+import Profile from './components/employee/profile/Profile'
 
 function App() {
     return (
@@ -23,6 +23,7 @@ function App() {
                         <Route path="/" element={<Navbar />}>
                             <Route index element={<Home />} />
                             <Route path="home" element={<Home />} />
+                            <Route path="profile" element={<Profile />} />
                         </Route>
 
                         <Route element={<EmployeeMasterLoginGuard />}>
