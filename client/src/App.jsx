@@ -12,6 +12,8 @@ import Navbar from './components/employee/navbar/Navbar'
 import Login from './components/employee/login/Login'
 import Home from './components/employee/home/Home'
 import Profile from './components/employee/profile/Profile'
+import EmployeeLoginGuard from './utils/route-guards/EmployeeLoginGuard'
+import EmployeeGuard from './utils/route-guards/EmployeeGuard'
 
 function App() {
     return (
@@ -19,11 +21,16 @@ function App() {
             <AuthProvider>
                 <UserFetch>
                     <Routes>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/" element={<Navbar />}>
-                            <Route index element={<Home />} />
-                            <Route path="home" element={<Home />} />
-                            <Route path="profile" element={<Profile />} />
+                        <Route element={<EmployeeLoginGuard />}>
+                            <Route path="/login" element={<Login />} />
+                        </Route>
+
+                        <Route element={<EmployeeGuard />}>
+                            <Route path="/" element={<Navbar />}>
+                                <Route index element={<Home />} />
+                                <Route path="home" element={<Home />} />
+                                <Route path="profile" element={<Profile />} />
+                            </Route>
                         </Route>
 
                         <Route element={<EmployeeMasterLoginGuard />}>
@@ -32,6 +39,7 @@ function App() {
                                 element={<EmployeeMasterLogin />}
                             />
                         </Route>
+
                         <Route element={<EmployeeMasterGuard />}>
                             <Route
                                 path="/employeeMaster"

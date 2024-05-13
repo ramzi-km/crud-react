@@ -5,8 +5,10 @@ import Loading from '../components/shared/loading/Loading'
 import apiInstance from '../services/api/apiInstance'
 
 const UserFetch = ({ children }) => {
-    const [fetchingEmployeeMaster, setFetchingEmployeeMaster] = useState(true)
     const auth = useAuth()
+
+    const [fetchingEmployeeMaster, setFetchingEmployeeMaster] = useState(true)
+    const [fetchingEmployee, setFetchingEmployee] = useState(true)
 
     useEffect(() => {
         if (!auth.employeeMaster) {
@@ -24,10 +26,25 @@ const UserFetch = ({ children }) => {
         } else {
             setFetchingEmployeeMaster(false)
         }
+        if (!auth.employee) {
+            const fetchEmployee = async () => {
+                try {
+                    const res = await apiInstance.get('/employee')
+                    await auth.employeeLogin(res.data.employee)
+                } catch (error) {
+                    console.error(error)
+                } finally {
+                    setFetchingEmployee(false)
+                }
+            }
+            fetchEmployee()
+        } else {
+            setFetchingEmployee(false)
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    return fetchingEmployeeMaster ? <Loading /> : children
+    return fetchingEmployeeMaster || fetchingEmployee ? <Loading /> : children
 }
 
 export default UserFetch

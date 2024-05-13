@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../../../services/providers/Auth'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import apiInstance from '../../../services/api/apiInstance'
 
@@ -23,7 +23,7 @@ const EmployeeMasterLogin = () => {
         } catch (error) {
             console.log(error)
             setErrMessage(
-                error?.response?.data?.message || 'unknown error occured'
+                error?.response?.data?.message || 'Unknown error occured'
             )
         }
     }
@@ -34,7 +34,7 @@ const EmployeeMasterLogin = () => {
                     <div className="w-full max-w-md rounded-lg border-4 border-gray-900 bg-base-200 shadow">
                         <div className="space-y-6 p-6">
                             <h1 className="text-center text-2xl font-bold text-gray-900">
-                                Log into Employee Master
+                                Login as Employee Master
                             </h1>
                             {errMessage && (
                                 <div className="alert alert-error relative my-3">
@@ -127,6 +127,14 @@ const EmployeeMasterLogin = () => {
                                         <span className="loading loading-spinner loading-sm mb-1 ml-5"></span>
                                     )}
                                 </button>
+                                <div className="text-center">
+                                    <Link
+                                        to="/login"
+                                        className="text-sm text-blue-400 hover:underline"
+                                    >
+                                        login as employee
+                                    </Link>
+                                </div>
                             </form>
                         </div>
                     </div>
