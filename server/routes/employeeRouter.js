@@ -3,6 +3,7 @@ const router = express.Router();
 
 //-------------------   middlewares   -------------------------//
 import verifyEmployee from "../middlewares/verifyEmployee.js";
+import { upload } from "../config/multer.config.js";
 
 //-------------------   controllers   --------------------------------//
 
@@ -12,6 +13,7 @@ import {
   employeeLogout,
   fetchEmployee,
   updateProfile,
+  updateProfilePic,
 } from "../controllers/employeeControllers.js";
 
 //-------------------   ------------   --------------------------------//
@@ -23,5 +25,13 @@ router.post("/logout", employeeLogout);
 
 // employee profile //
 router.patch("/employee", verifyEmployee, updateProfile);
+router.post(
+  "/employee/profilePic",
+  verifyEmployee,
+  upload.single("image"),
+  updateProfilePic
+);
+
+
 
 export default router;

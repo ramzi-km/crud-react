@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import employeeModel from "../models/employeeModel.js";
+import cloudinary from "../config/cloudinary.config.js";
 
 export const employeeLogin = async (req, res) => {
   try {
@@ -101,6 +102,39 @@ export const updateProfile = async (req, res) => {
     // Save the updated employee details
     await updatingEmployee.save();
 
+    return res
+      .status(200)
+      .json({ updatedEmployee: updatingEmployee, message: "success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateProfilePic = async (req, res) => {
+  try {
+    const updatingEmployee = await employeeModel.findByPk(req.employee.id);
+    if (!updatingEmployee)
+      return res.status(404).json({ message: "Employee not found" });
+    const previousProfilePic = updatingEmployee.profilePic;
+
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+
+    const { secure_url } = await cloudinary.uploader.upload(dataURI, {
+      resource_type: "auto",
+      folder: "employee-manager",
+    });
+
+    updatingEmployee.profilePic = secure_url;
+    await updatingEmployee.save();
+
+    const publicId = previousProfilePic.split("/").pop().split(".")[0];
+    cloudinary.api
+      .delete_resources([`employee-manager/${publicId}`], {
+        type: "upload",
+        resource_type: "image",
+      })
+      .then((data) => console.log(data));
     return res
       .status(200)
       .json({ updatedEmployee: updatingEmployee, message: "success" });

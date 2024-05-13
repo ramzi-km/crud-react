@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../../services/providers/Auth'
 import apiInstance from '../../../services/api/apiInstance'
-import { MdOutlineErrorOutline } from 'react-icons/md'
+import { MdEdit, MdOutlineErrorOutline } from 'react-icons/md'
 import { FaRegCheckCircle } from 'react-icons/fa'
+import fileTypeChecker from 'file-type-checker'
+import Loading from '../../shared/loading/Loading'
 
 const Profile = () => {
     const [errMessage, setErrMessage] = useState(null)
@@ -47,6 +49,67 @@ const Profile = () => {
     const areFormValuesChanged = () => {
         return JSON.stringify(getValues()) !== JSON.stringify(initialFormValues)
     }
+
+    const hiddenFileInput = useRef(null)
+    const [fileUploadErr, setFileUploadErr] = useState('')
+    const [fileUploading, setFileUploading] = useState(false)
+
+    const handleProfileEditClick = () => {
+        if (fileUploading) {
+            return
+        }
+        hiddenFileInput.current.click()
+    }
+
+    const handleFileChange = (event) => {
+        try {
+            const file = event.target.files[0]
+            const reader = new FileReader()
+            const types = ['jpeg', 'png', 'gif']
+
+            reader.onload = async () => {
+                try {
+                    setFileUploading(true)
+
+                    const isImage = fileTypeChecker.validateFileType(
+                        reader.result,
+                        types
+                    )
+                    if (isImage) {
+                        setFileUploadErr('')
+                        const formData = new FormData()
+                        formData.append('image', file)
+                        const axiosConfig = {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                        }
+
+                        const res = await apiInstance.post(
+                            'employee/profilePic',
+                            formData,
+                            axiosConfig
+                        )
+                        auth.employeeLogin(res.data?.updatedEmployee)
+                        console.log(res)
+                    } else {
+                        setFileUploadErr(
+                            'Only .png, .jpg and .jpeg format allowed!'
+                        )
+                    }
+                } catch (error) {
+                    setFileUploadErr(error.response?.data?.message)
+                } finally {
+                    setFileUploading(false)
+                }
+            }
+
+            reader.readAsArrayBuffer(file)
+        } catch (err) {
+            console.error('Error: ', err.message)
+        }
+    }
+
     return (
         <div className="flex w-full flex-col items-center justify-center gap-5 bg-white md:flex-row">
             <main className=" mt-24 flex w-full items-center justify-center py-1">
@@ -57,12 +120,40 @@ const Profile = () => {
                         </h2>
 
                         <div className="mx-auto mt-2 grid max-w-2xl">
-                            <div className="flex flex-col items-center justify-center space-y-5 sm:flex-row sm:space-y-0">
-                                <img
-                                    className="h-36 w-36 rounded-full object-cover p-1 ring-2 ring-accent"
-                                    src={auth.employee?.profilePic}
-                                    alt="Bordered profile pic"
-                                />
+                            <div className=" flex flex-col items-center justify-center space-y-5 sm:flex-row sm:space-y-0">
+                                <div className="relative h-36 w-36 rounded-full">
+                                    <img
+                                        className="h-36 w-36 rounded-full object-cover p-1 ring-2 ring-accent"
+                                        src={auth.employee?.profilePic}
+                                        alt="Bordered profile pic"
+                                    />
+                                    <button
+                                        className="btn btn-circle btn-info btn-sm absolute right-0 top-2"
+                                        onClick={handleProfileEditClick}
+                                    >
+                                        <MdEdit size={20} />
+                                    </button>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className=" hidden"
+                                        onChange={handleFileChange}
+                                        ref={hiddenFileInput}
+                                        multiple={false}
+                                    />
+                                    {fileUploading && (
+                                        <Loading
+                                            round="rounded-full"
+                                            size="30"
+                                            stroke="4.5"
+                                        />
+                                    )}
+                                </div>
+                                {fileUploadErr && (
+                                    <div className="ml-3 mt-1 text-sm text-red-500">
+                                        {fileUploadErr}
+                                    </div>
+                                )}
                             </div>
 
                             {errMessage && (

@@ -7,10 +7,16 @@ const Loading = ({
     stroke = '9',
     speed = '3.5',
     color = 'oklch(var(--a))',
+    round = 'rounded-lg',
 }) => {
     return (
         <>
-            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-70 text-accent">
+            <div
+                className={
+                    'absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-accent ' +
+                    round
+                }
+            >
                 <l-hatch
                     size={size}
                     stroke={stroke}
